@@ -1,0 +1,19 @@
+# Use the official MoodleHQ PHP/Apache base image
+FROM moodlehq/moodle-php-apache:8.1
+
+# Download the official Moodle source code from Moodle.org
+RUN apt-get update && apt-get install -y curl \
+    && rm -rf /var/www/html/* \
+    && curl -fSL https://download.moodle.org/download.php/direct/stable403/moodle-latest-403.tgz | tar -xz -C /var/www/html --strip-components=1 \
+    && chown -R www-data:www-data /var/www/html
+
+# Create the Moodle data directory
+RUN mkdir -p /var/www/moodledata \
+    && chown -R www-data:www-data /var/www/moodledata
+
+# Provide an environment-variable aware config.php to automatically connect to the database
+COPY docker-moodle-config.php /var/www/html/config.php
+RUN chown www-data:www-data /var/www/html/config.php
+
+# Expose port and default entrypoint
+EXPOSE 80

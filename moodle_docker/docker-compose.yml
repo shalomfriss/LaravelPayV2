@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  moodle:
+    build:
+      context: .
+      dockerfile: Dockerfile.moodle
+    container_name: moodle
+    ports:
+      - "3000:80"
+    environment:
+      - MOODLE_DATABASE_HOST=host.docker.internal
+      - MOODLE_DATABASE_USER=root
+      - MOODLE_DATABASE_PASSWORD=gr8minds
+      - MOODLE_DATABASE_NAME=moodle
+    volumes:
+      # Data volumes to persist plugin installations and userdata
+      - moodle_app_data:/var/www/html
+      - moodle_userdata:/var/www/moodledata
+
+volumes:
+  moodle_app_data:
+  moodle_userdata:
