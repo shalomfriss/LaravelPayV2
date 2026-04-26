@@ -11,7 +11,10 @@ Roles are defined in JetstreamServiceProvider
 # Still working out Moodle here are the options 
 # ---------------------------------------------------
 # Run Latest Moodle
-docker run --rm -p 8100:443 moodlehq/moodleapp
+
+Run docker compose up
+
+<!-- docker run --rm -p 8100:443 moodlehq/moodleapp
 
 
 docker run --rm --name moodle \
@@ -23,7 +26,7 @@ docker run --rm --name moodle \
   -e MOODLE_DATABASE_PASSWORD=gr8minds \
   -e MOODLE_DATABASE_NAME=moodle \
   -v moodle_app:/bitnami/moodle \
-  -v moodle_data:/bitnami/moodledata \
+  -v moodle_data:/bitnami/moodledata \ nb=
   moodlehq/moodleapp
 
 # Run Moodle through Docker
@@ -50,7 +53,7 @@ docker stop moodle
 
 Check 'Enable web services' then click 'Save Changes'
 
-Located at port 3000
+Located at port 3000 -->
 
 **********************************************************
 ** Troubleshooting **
