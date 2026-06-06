@@ -20,4 +20,8 @@ services:
 
 volumes:
   moodle_app_data:
+    name: laravelpaymentjetstream_moodle_app_data
+    external: true
   moodle_userdata:
+    name: laravelpaymentjetstream_moodle_userdata
+    external: true
