@@ -245,6 +245,9 @@ function CourseTable({
     courses: Array<AssignedCourse | MyCourse>;
     showUser?: boolean;
 }) {
+    const page = usePage();
+    const teamSlug = page.props.currentTeam?.slug;
+
     return (
         <section className="rounded-lg border bg-card p-4">
             <h2 className="mb-3 text-lg font-semibold">{title}</h2>
@@ -262,8 +265,26 @@ function CourseTable({
                         {courses.map((course) => (
                             <tr key={course.id} className="border-b last:border-0">
                                 {showUser ? <td className="py-3 pr-4">{(course as AssignedCourse).user_name}</td> : null}
-                                <td className="py-3 pr-4 font-medium">{course.course_title}</td>
-                                <td className="py-3 pr-4 capitalize">{course.status}</td>
+                                <td className="py-3 pr-4 font-medium">
+                                    <Link
+                                        href={teamSlug ? `/${teamSlug}/training/${course.course_number}` : '#'}
+                                        className="font-medium hover:underline text-primary"
+                                    >
+                                        {course.course_title}
+                                    </Link>
+                                </td>
+                                <td className="py-3 pr-4">
+                                    {course.status === 'completed' ? (
+                                        <span className="flex items-center gap-1.5 text-green-600 dark:text-green-400 font-semibold">
+                                            <CheckCircle2 className="size-4" />
+                                            Completed
+                                        </span>
+                                    ) : (
+                                        <span className="text-amber-600 dark:text-amber-400 font-medium capitalize">
+                                            {course.status}
+                                        </span>
+                                    )}
+                                </td>
                                 <td className="py-3 text-muted-foreground">
                                     {new Date(('updated_at' in course ? course.updated_at : (course as MyCourse).created_at) ?? '').toLocaleDateString()}
                                 </td>

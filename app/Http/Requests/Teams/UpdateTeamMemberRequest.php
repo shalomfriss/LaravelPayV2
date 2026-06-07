@@ -17,7 +17,8 @@ class UpdateTeamMemberRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'role' => ['required', 'string', Rule::in(array_column(TeamRole::assignable(), 'value'))],
+            'role' => ['sometimes', 'required', 'string', Rule::in(array_column(TeamRole::assignable(), 'value'))],
+            'allow_knowledge_base' => ['sometimes', 'boolean'],
         ];
     }
 }

@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
-#[Fillable(['team_id', 'user_id', 'role'])]
+#[Fillable(['team_id', 'user_id', 'role', 'allow_knowledge_base'])]
 class Membership extends Pivot
 {
     /**
@@ -54,6 +54,7 @@ class Membership extends Pivot
     {
         return [
             'role' => TeamRole::class,
+            'allow_knowledge_base' => 'boolean',
         ];
     }
 }

@@ -74,12 +74,13 @@ class TrainingController extends Controller
         ]);
     }
 
-    public function show(string $course): Response
+    public function show(string $current_team, string $course): Response
     {
         $courseDetails = $this->appendTokenToMoodleImages(
             $this->moodleRequest('core_course_get_contents', ['courseid' => $course]),
         );
 
+        // dd($course);
         $hasSigned = Signatures::query()
             ->where('user_id', auth()->id())
             ->where('course_id', $course)
@@ -92,7 +93,7 @@ class TrainingController extends Controller
         ]);
     }
 
-    public function showTopic(string $course, string $topic): Response
+    public function showTopic(string $current_team, string $course, string $topic): Response
     {
         return Inertia::render('training/topic', [
             'courseId' => $course,
@@ -123,7 +124,7 @@ class TrainingController extends Controller
         return response()->json(['message' => 'Course assigned successfully']);
     }
 
-    public function completeCourse(int $userId, string $courseNumber): JsonResponse
+    public function completeCourse(string $current_team, int $userId, string $courseNumber): JsonResponse
     {
         $courseUser = CourseUser::query()
             ->where('user_id', $userId)
@@ -135,7 +136,7 @@ class TrainingController extends Controller
         return response()->json(['message' => 'Course marked as completed']);
     }
 
-    public function getUserCourses(int $userId): JsonResponse
+    public function getUserCourses(string $current_team, int $userId): JsonResponse
     {
         $user = User::with('courses')->findOrFail($userId);
 
@@ -221,7 +222,14 @@ class TrainingController extends Controller
             return [];
         }
 
-        return $response->json() ?? [];
+        $json = $response->json() ?? [];
+
+        if (isset($json['exception'])) {
+            // Log the exception if needed: \Log::error('Moodle API Error', $json);
+            return [];
+        }
+
+        return $json;
     }
 
     /**

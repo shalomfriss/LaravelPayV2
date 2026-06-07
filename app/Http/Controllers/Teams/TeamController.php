@@ -63,6 +63,7 @@ class TeamController extends Controller
                 'avatar' => $member->avatar ?? null,
                 'role' => $member->pivot->role->value,
                 'role_label' => $member->pivot->role?->label(),
+                'allow_knowledge_base' => $member->pivot->allow_knowledge_base,
             ]),
             'invitations' => $team->invitations()
                 ->whereNull('accepted_at')

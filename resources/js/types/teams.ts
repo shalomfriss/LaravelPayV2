@@ -17,6 +17,7 @@ export type TeamMember = {
     avatar?: string | null;
     role: TeamRole;
     role_label: string;
+    allow_knowledge_base: boolean;
 };
 
 export type TeamInvitation = {

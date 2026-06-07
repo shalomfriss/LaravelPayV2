@@ -8,7 +8,7 @@ use Inertia\Response;
 
 class UserProfileController extends Controller
 {
-    public function show(User $user): Response
+    public function show(string $current_team, User $user): Response
     {
         return Inertia::render('users/show', [
             'member' => $user->only(['id', 'name', 'email']),

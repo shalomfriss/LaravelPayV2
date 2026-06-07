@@ -20,14 +20,21 @@ class TeamMemberController extends Controller
     {
         Gate::authorize('updateMember', $team);
 
-        $newRole = TeamRole::from($request->validated('role'));
-
-        $team->memberships()
+        $membership = $team->memberships()
             ->where('user_id', $user->id)
-            ->firstOrFail()
-            ->update(['role' => $newRole]);
+            ->firstOrFail();
 
-        Inertia::flash('toast', ['type' => 'success', 'message' => __('Member role updated.')]);
+        $data = [];
+        if ($request->has('role')) {
+            $data['role'] = TeamRole::from($request->validated('role'));
+        }
+        if ($request->has('allow_knowledge_base')) {
+            $data['allow_knowledge_base'] = (bool) $request->validated('allow_knowledge_base');
+        }
+
+        $membership->update($data);
+
+        Inertia::flash('toast', ['type' => 'success', 'message' => __('Member settings updated.')]);
 
         return to_route('teams.edit', ['team' => $team->slug]);
     }

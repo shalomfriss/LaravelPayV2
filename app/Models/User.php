@@ -66,4 +66,29 @@ class User extends Authenticatable implements FilamentUser
 
         return in_array($this->teamRole($team)?->value, ['owner', 'admin'], true);
     }
+
+    public function canAccessKnowledgeBase(?Team $team = null): bool
+    {
+        $team = $team ?? $this->currentTeam;
+
+        if ($team === null) {
+            return false;
+        }
+
+        $role = $this->teamRole($team);
+
+        if ($role === null) {
+            return false;
+        }
+
+        if (in_array($role->value, ['owner', 'admin'], true)) {
+            return true;
+        }
+
+        $membership = $this->teamMemberships()
+            ->where('team_id', $team->id)
+            ->first();
+
+        return (bool) ($membership?->allow_knowledge_base ?? false);
+    }
 }

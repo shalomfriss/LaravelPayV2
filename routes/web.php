@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\KnowledgeBaseController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\Teams\TeamInvitationController;
@@ -18,6 +19,8 @@ Route::prefix('{current_team}')
     ->middleware(['auth', 'verified', EnsureTeamMembership::class])
     ->group(function () {
         Route::inertia('dashboard', 'dashboard')->name('dashboard');
+
+        Route::get('knowledge-base', [KnowledgeBaseController::class, 'index'])->name('knowledge-base');
 
         Route::get('training', [TrainingController::class, 'index'])->name('training');
         Route::get('training/{course}', [TrainingController::class, 'show'])->name('training.show');

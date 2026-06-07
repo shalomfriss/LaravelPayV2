@@ -16,6 +16,7 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import {
@@ -74,6 +75,13 @@ export default function TeamEdit({
     const updateMemberRole = (member: TeamMember, newRole: string) => {
         router.visit(updateMember([team.slug, member.id]), {
             data: { role: newRole },
+            preserveScroll: true,
+        });
+    };
+
+    const toggleKnowledgeBaseAccess = (member: TeamMember, checked: boolean) => {
+        router.visit(updateMember([team.slug, member.id]), {
+            data: { allow_knowledge_base: checked },
             preserveScroll: true,
         });
     };
@@ -196,6 +204,23 @@ export default function TeamEdit({
                                 </div>
 
                                 <div className="flex items-center gap-2">
+                                    <div className="flex items-center gap-2 mr-4">
+                                        <Checkbox
+                                            id={`kb-access-${member.id}`}
+                                            checked={member.role === 'owner' || member.role === 'admin' || member.allow_knowledge_base}
+                                            disabled={!permissions.canUpdateMember || member.role === 'owner' || member.role === 'admin'}
+                                            onCheckedChange={(checked) =>
+                                                toggleKnowledgeBaseAccess(member, checked === true)
+                                            }
+                                        />
+                                        <Label
+                                            htmlFor={`kb-access-${member.id}`}
+                                            className="text-xs font-medium cursor-pointer text-muted-foreground"
+                                        >
+                                            KB Access
+                                        </Label>
+                                    </div>
+
                                     {member.role !== 'owner' &&
                                     permissions.canUpdateMember ? (
                                         <DropdownMenu>

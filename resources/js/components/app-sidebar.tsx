@@ -1,5 +1,5 @@
 import { Link, usePage } from '@inertiajs/react';
-import { BookOpen, CreditCard, LayoutGrid, ShieldCheck } from 'lucide-react';
+import { BookOpen, CreditCard, Database, LayoutGrid, ShieldCheck } from 'lucide-react';
 import AppLogo from '@/components/app-logo';
 import { NavFooter } from '@/components/nav-footer';
 import { NavMain } from '@/components/nav-main';
@@ -34,6 +34,17 @@ export function AppSidebar() {
             href: page.props.currentTeam ? `/${page.props.currentTeam.slug}/training` : '/',
             icon: BookOpen,
         },
+    ];
+
+    if (page.props.canAccessKnowledgeBase) {
+        mainNavItems.push({
+            title: 'Knowledge Base',
+            href: page.props.currentTeam ? `/${page.props.currentTeam.slug}/knowledge-base` : '/',
+            icon: Database,
+        });
+    }
+
+    mainNavItems.push(
         {
             title: 'Payments',
             href: '/home',
@@ -48,8 +59,8 @@ export function AppSidebar() {
             title: 'Admin',
             href: '/admin',
             icon: ShieldCheck,
-        },
-    ];
+        }
+    );
 
     const footerNavItems: NavItem[] = [
         {
